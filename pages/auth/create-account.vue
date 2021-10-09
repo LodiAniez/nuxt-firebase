@@ -121,6 +121,8 @@ import {
 } from 'firebase/auth'
 import Cookies from 'js-cookie'
 
+const auth = getAuth()
+
 export default {
   layout: 'auth-layout',
   data() {
@@ -136,7 +138,6 @@ export default {
       if (this.password !== this.confirmPassword)
         return alert('Password do not match.')
 
-      const auth = getAuth()
       try {
         await createUserWithEmailAndPassword(auth, this.username, this.password)
         const idToken = await getIdToken(auth.currentUser)

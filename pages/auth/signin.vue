@@ -98,6 +98,8 @@
 import { getAuth, signInWithEmailAndPassword, getIdToken } from 'firebase/auth'
 import Cookies from 'js-cookie'
 
+const auth = getAuth()
+
 export default {
   layout: 'auth-layout',
   data() {
@@ -109,8 +111,6 @@ export default {
 
   methods: {
     async Login() {
-      const auth = getAuth()
-
       try {
         await signInWithEmailAndPassword(auth, this.username, this.password)
         const idToken = await getIdToken(auth.currentUser)

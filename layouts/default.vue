@@ -348,11 +348,12 @@ export default {
     return {
       isOpen: false,
       userEmail: null,
-      auth: getAuth(),
     }
   },
   mounted() {
-    onAuthStateChanged(this.auth, (user) => {
+    const auth = getAuth()
+
+    onAuthStateChanged(auth, (user) => {
       if (user) this.userEmail = user.email
     })
   },
@@ -361,8 +362,10 @@ export default {
       this.isOpen = !this.isOpen
     },
     async signOut() {
+      const auth = getAuth()
+
       try {
-        await signOut(this.auth)
+        await signOut(auth)
         Cookies.remove('access_token')
         this.$store.dispatch('clearState')
         $nuxt.$router.push('/auth/signin')

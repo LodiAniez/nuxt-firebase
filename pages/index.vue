@@ -54,12 +54,6 @@ export default {
     }
   },
 
-  head() {
-    return {
-      title: 'NuxtTest',
-    }
-  },
-
   computed: {
     tasks() {
       return this.$store.getters.getTaskList

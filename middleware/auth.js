@@ -1,8 +1,7 @@
 import { getUserFromCookie } from '~/helpers'
-import { getAuth } from 'firebase/auth'
 import Cookies from 'js-cookie'
 
-export default function ({ route, req, redirect }) {
+export default function ({ route, req, redirect, store }) {
   if (process.server) {
     const user = getUserFromCookie(req)
 
@@ -21,16 +20,14 @@ export default function ({ route, req, redirect }) {
       return
     }
   } else {
-    const auth = getAuth()
-
     if (
       route.path === '/auth/signin' ||
       route.path === '/auth/create-account'
     ) {
-      if (auth.currentUser) return redirect('/')
+      if (store.state.user) return redirect('/')
       return
     } else {
-      if (!auth.currentUser) {
+      if (!store.state.user) {
         Cookies.remove('access_token')
         return redirect('/auth/signin')
       }
