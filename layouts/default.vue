@@ -324,24 +324,24 @@
 </template>
 
 <script>
-import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth'
-import Cookies from 'js-cookie'
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth"
+import Cookies from "js-cookie"
 
 export default {
   computed: {
     routePath() {
-      return this.$route.name === 'index'
-        ? 'Add Todo'
-        : this.$route.name === 'finished-tasks'
-        ? 'Done Tasks'
-        : this.$route.name === 'gallery'
-        ? 'Gallery'
-        : 'Add Image'
+      return this.$route.name === "index"
+        ? "Add Todo"
+        : this.$route.name === "finished-tasks"
+        ? "Done Tasks"
+        : this.$route.name === "gallery"
+        ? "Gallery"
+        : "Add Image"
     },
   },
   head() {
     return {
-      title: 'Nuxt+Firebase Integration',
+      title: "Nuxt+Firebase Integration",
     }
   },
   data() {
@@ -354,7 +354,12 @@ export default {
     const auth = getAuth()
 
     onAuthStateChanged(auth, (user) => {
-      if (user) this.userEmail = user.email
+      if (!user) {
+        Cookies.remove("access_token")
+        $nuxt.$router.push("/auth/signin")
+      } else {
+        this.userEmail = user.email
+      }
     })
   },
   methods: {
@@ -366,9 +371,9 @@ export default {
 
       try {
         await signOut(auth)
-        Cookies.remove('access_token')
-        this.$store.dispatch('clearState')
-        $nuxt.$router.push('/auth/signin')
+        Cookies.remove("access_token")
+        this.$store.dispatch("clearState")
+        $nuxt.$router.push("/auth/signin")
       } catch (err) {
         alert(err.message)
       }

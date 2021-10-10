@@ -118,33 +118,33 @@ import {
   getAuth,
   getIdToken,
   createUserWithEmailAndPassword,
-} from 'firebase/auth'
-import Cookies from 'js-cookie'
+} from "firebase/auth"
+import Cookies from "js-cookie"
 
 const auth = getAuth()
 
 export default {
-  layout: 'auth-layout',
+  layout: "auth-layout",
   data() {
     return {
-      username: '',
-      password: '',
-      confirmPassword: '',
+      username: "",
+      password: "",
+      confirmPassword: "",
     }
   },
 
   methods: {
     async createAccount() {
       if (this.password !== this.confirmPassword)
-        return alert('Password do not match.')
+        return alert("Password do not match.")
 
       try {
         await createUserWithEmailAndPassword(auth, this.username, this.password)
         const idToken = await getIdToken(auth.currentUser)
-        Cookies.set('access_token', idToken)
+        Cookies.set("access_token", idToken)
 
-        alert('Your account has been created, click ok to continue.')
-        this.$router.push('/')
+        alert("Your account has been created, click ok to continue.")
+        this.$router.push("/")
       } catch (err) {
         alert(err.message)
       }

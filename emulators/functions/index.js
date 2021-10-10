@@ -1,26 +1,26 @@
-const functions = require('firebase-functions')
-const admin = require('firebase-admin')
-const path = require('path')
-const fs = require('fs-extra')
-const os = require('os')
-const sharp = require('sharp')
+const functions = require("firebase-functions")
+const admin = require("firebase-admin")
+const path = require("path")
+const fs = require("fs-extra")
+const os = require("os")
+const sharp = require("sharp")
 
-const { Storage } = require('@google-cloud/storage')
+const { Storage } = require("@google-cloud/storage")
 const gcs = new Storage()
 
 admin.initializeApp()
 
 exports.onFileUpload = functions.storage.object().onFinalize(async (object) => {
-  if (object.name.startsWith('gallery/resized-')) return false
+  if (object.name.startsWith("gallery/resized-")) return false
 
   const bucket = gcs.bucket(object.bucket)
   const filePath = object.name
-  const fileName = filePath.split('/').pop()
+  const fileName = filePath.split("/").pop()
 
-  const workingDir = path.join(os.tmpdir(), 'thumbs')
+  const workingDir = path.join(os.tmpdir(), "thumbs")
 
   const timestamp = Math.floor(Date.now() / 1000)
-  const tmpFilePath = path.join(workingDir, 'source_' + timestamp + '.png')
+  const tmpFilePath = path.join(workingDir, "source_" + timestamp + ".png")
 
   try {
     await fs.ensureDir(workingDir)
